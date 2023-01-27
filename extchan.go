@@ -108,7 +108,7 @@ func main() {
    p_repodb := flag.String("repodb", "localhost:8086", "influx db")
    p_datadb := flag.String("datadb", "localhost:3306", "mysql db")
    p_username := flag.String("user", "admin", "influx user")
-   p_password := flag.String("pass", "af6a9271!", "influx user pass")
+   p_password := flag.String("pass", "", "influx user pass")
    p_logfile := flag.String("log", "", "log file path")
    p_help := flag.Bool("help", false, "display help")
    flag.Parse()
