@@ -1,5 +1,5 @@
 ## 1. 기본 사용법
-
+’’’
 package main
 import (
   "fmt"
@@ -21,7 +21,7 @@ func main() {
 
   time.Sleep(3 * time.Second)
 }
-
+’’’
 ## 2. 서브 고루틴 종료될 때까지 대기
 var wg sync.WaitGroup
 
