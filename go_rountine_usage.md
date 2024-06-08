@@ -48,6 +48,7 @@ messages <- "Test1"     // 채널 데이터 넣기
 
 var msg string = <- messages  // 채널 데이터 얻기
 
+close(messages)
 
 // 예제...
 package main
@@ -76,3 +77,46 @@ func gotest(wg *sync.WaitGroup, ch chan int) {
 }
 ```
 
+## 5. 고루틴 다채널 통신 (select)
+```
+package main
+
+import (
+  "fmt"
+  "sync"
+  "time"
+)
+
+func square(wg *sync.WaitGroup, ch chan int, quit chan bool) {
+  tick := time.Tick(time.Second)
+
+  for {
+    select {
+      case <- tick:
+        fmt.Println("Tick")   // 1초 마다 실행
+      case n := <-ch:
+        fmt.Printf("square: %d\n", n*n)
+        time.Sleep(time.Second)
+      case <-quit:
+        wg.Done()
+        return
+    }
+  }
+}
+
+func main() {
+  var wg sync.WaitGroup
+  ch := make(chan int)
+  quit := make(chan bool)
+
+  wg.Add(1)
+  go square(&wg, ch, quit)
+
+  for i := 0; i < 10; i++ {
+    ch <- i * 2
+  }
+
+  quit <- true
+  wg.Wait()
+}
+```
