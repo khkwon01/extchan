@@ -41,5 +41,38 @@ defer mutex.Unlock() // go rountine
 ```
 
 ## 4. 고루틴끼리 통신 (채널)
+```
+var messages chan string = make(chan string)  // channel 생성
 
+messages <- "Test1"     // 채널 데이터 넣기
+
+var msg string = <- messages  // 채널 데이터 얻기
+
+
+// 예제...
+package main
+import (
+  "fmt"
+  "sync"
+  "time"
+)
+
+func main() {
+  var wg sync.WaitGroup
+  ch := make(chan int)
+
+  wg.Add(1)
+  go gotest(&wg, ch)
+  ch <- 1
+  wg.Wait()
+}
+
+func gotest(wg *sync.WaitGroup, ch chan int) {
+  n := <-ch
+
+  time.Sleep(time.Second)
+  fmt.Printf("square: %d\n", n*n)
+  wg.Done()
+}
+```
 
